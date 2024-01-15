@@ -1,30 +1,43 @@
 <template>
+  <div class="chat-title">
+    <div></div>
+    <div class="title">
+      {{ 'LOVE小队' }}
+    </div>
+    <div class="userHeadimg">
+      <img :src="userInfo.pic"  @click="showLoginOut">
+    </div>
+  </div>
   <div class="chat-content">
     <!-- recordContent 聊天记录数组-->
-    <div v-for="(itemc, indexc) in recordContent" :key="indexc">
-      <div v-if="typeof itemc == 'string'" class="addtext">
+    <div v-for="(itemc , indexc) in recordContent" :key="indexc">
+      <span v-if="typeof itemc == 'string'" class="addtext">
         {{ itemc }}
-      </div>
+      </span>
       <!-- 对方 -->
       <div class="word" v-else-if="!itemc.mineMsg">
-        <el-image :src="itemc.headUrl" />
+        <img :src="itemc.headUrl" />
         <div class="info">
-          <p class="time">{{ itemc.nickName }} {{ itemc.timestamp }}</p>
+          <p class="time">
+            {{ itemc.nickName }} {{ moment(itemc.timestamp).utcOffset(8).format('HH:mm') }}
+          </p>
           <div class="info-content">{{ itemc.contactText }}</div>
         </div>
       </div>
       <!-- 我的 -->
       <div class="word-my" v-else>
         <div class="info">
-          <p class="time">{{ itemc.nickName }} {{ itemc.timestamp }}</p>
+          <p class="time">
+            {{ itemc.nickName }} {{ moment(itemc.timestamp).utcOffset(8).format('HH:mm') }}
+          </p>
           <div class="info-content">{{ itemc.contactText }}</div>
         </div>
         <img :src="itemc.headUrl" />
       </div>
     </div>
     <div class="footer">
-      <ElInput v-model="inputText" />
-      <ElButton @click="submitText()">发送</ElButton>
+      <el-input v-model="inputText"  />
+      <el-button @click="submitText()">发送</el-button>
     </div>
   </div>
 </template>
@@ -32,17 +45,30 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import config from "../../api/config";
-import { ElInput, ElButton } from "element-plus";
-// import {DataView} from "vue"
+// import { elInput } from "element-plus";
+import moment from "moment";
+import {useStore} from "vuex"
 
-let url = config.ws + "?name=haha";
+const store = useStore()
+const userInfo = store.state.userInfo
+
+
+
+let url = config.ws + `?name=${userInfo.username}`;
 const socket = new WebSocket(url);
-
 const inputText = ref<string>("");
-const recordContent = ref<unknown[]>([]);
-interface DataView {
-  getString(byteOffset: number, byteLength: number, encoding?: string): string;
+
+interface recordContents  {
+  timestamp:string | unknown,
+  headUrl:string,
+  nickName:string,
+  contactText:string,
+  userava:string ,
+  username:string,
+
 }
+const recordContent = ref<recordContents[]>([]);
+
 
 onMounted(() => {
   // 处理WebSocket连接事件
@@ -50,56 +76,54 @@ onMounted(() => {
     console.log("WebSocket连接已打开", event);
   });
 });
-socket.addEventListener("message", (event) => {
-  // 处理收到的消息
-  // console.log(event.data);
-  // // 假设 binaryData 是从WebSocket接收到的二进制数据
-  // const binaryData: ArrayBuffer = event.data as ArrayBuffer;
-
-  // // 创建一个 DataView 对象以便读取二进制数据
-  // const dataView   = new DataView(binaryData);
-
-  // // 根据你的数据格式解析数据，这只是一个简单的示例
-  // const message = dataView.getString(0, binaryData.byteLength, "utf-8");
-  // console.log("解析后的消息：", message);
-
-//   // 将二进制数据转换为ArrayBuffer
-// var arrayBuffer = new ArrayBuffer(event.data.length);
-// // 将ArrayBuffer转换为JSON对象
-// var jsonObject = JSON.parse(arrayBufferToString(arrayBuffer));
 
 
-
-
-
-
-  recordContent.value.push(event.data);
+socket.addEventListener("message", async (event) => {
+  let message = JSON.parse(event.data);
+  console.log(message);
+  recordContent.value.push(message);
 });
 
 const submitText = () => {
-  let timestamp = "18:00";
+  let timestamp =  moment();
   let headUrl =
     "http://sheisi.love:9000/be16a1c1-cc4f-41b8-be0a-b0a000acd6fa.png";
-  let params: any = {
+  let data: recordContents = {
     nickName: "haha",
     timestamp,
     headUrl,
     contactText: inputText.value,
   };
 
+  let params = JSON.stringify(data);
   socket.send(params);
+  inputText.value=''
 };
+
+
+
+/**
+ * 显示退出
+ */
+ const showLoginOut = ()=>{
+  console.log('退出')
+ }
 </script>
 
 <style lang="scss" scoped>
 .chat-content {
+  
   width: 100%;
-  padding: 20px;
+  padding:10px 20px;
+  box-sizing: border-box;
   .addtext {
-    background: #ddd;
-    width: 160px;
-    height: 20px;
-    margin: 0 auto;
+    background: #dde;
+    display: block;
+    box-sizing: border-box;
+
+    width: 300px;
+    // height: 20px;
+    margin: 10px auto;
     text-align: center;
     border-radius: 13px;
     padding: 3px;
@@ -189,9 +213,31 @@ const submitText = () => {
   }
   .footer {
     position: fixed;
+    width: 100%;
+    height: 50px;
     bottom: 0;
+    left: 0;
+    padding: 5px 30px;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
+    background-color: #eee;
+    .el-button{
+      margin:0 5px ;
+      height: 40px;
+      width: 100px;
+      border-radius: 20px;
+      background-color:#a3c3f6;
+    }
+    .el-input{
+      padding: 2px 5px;
+      box-sizing: border-box;
+      height: 40px;
+      border: none;
+      border-radius: 20px;
+      padding: 0;
+
+    }
   }
 }
 </style>
