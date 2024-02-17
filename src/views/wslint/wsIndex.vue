@@ -63,8 +63,8 @@ interface recordContents  {
   headUrl:string,
   nickName:string,
   contactText:string,
-  userava:string ,
-  username:string,
+  userava?:string ,
+  username?:string,
 
 }
 const recordContent = ref<recordContents[]>([]);
@@ -86,10 +86,9 @@ socket.addEventListener("message", async (event) => {
 
 const submitText = () => {
   let timestamp =  moment();
-  let headUrl =
-    "http://sheisi.love:9000/be16a1c1-cc4f-41b8-be0a-b0a000acd6fa.png";
+  let headUrl = userInfo.userpic ;
   let data: recordContents = {
-    nickName: "haha",
+    nickName: userInfo.username,
     timestamp,
     headUrl,
     contactText: inputText.value,

@@ -25,6 +25,7 @@ let router = useRouter()
 let data = ref({
   userInfo:{
       username: 'ha' ,
+      // userpic:'https://pica.zhimg.com/v2-89be1e0c4169d3b2afd37fd3d221dbb2_xll.jpg?source=32738c0c',
       userpic:'https://ts1.cn.mm.bing.net/th?id=OIP-C.zl32ej_HY_zgPWkih0k1TwAAAA&w=250&h=250&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2',
       userId:'333'
     }
