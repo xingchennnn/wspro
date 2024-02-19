@@ -13,6 +13,7 @@
     "element-plus": "^2.5.1",
     "moment": "^2.30.1",
     "sass": "^1.69.7",
+    "vform3-builds": "^3.0.10",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.3",

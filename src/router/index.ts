@@ -28,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     path:'/userlogin',
     name:'userlogin',
     component:()=>import('@/views/login/userlogin.vue')
+  },
+  {
+    path:'/test_vform',
+    name:'test_vform',
+    component:()=>import('@/views/test_vform/test_vform.vue')
   }
 ]
 
