@@ -4,7 +4,7 @@ import HomeView from '../views/HomeView.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path:'/',
-    redirect:'/ws'
+    redirect:'/userlogin'
   },
   {
     path: '/',
