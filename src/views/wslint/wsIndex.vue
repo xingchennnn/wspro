@@ -67,7 +67,7 @@ interface recordContents  {
   username?:string,
 
 }
-const recordContent = ref<recordContents[]>([]);
+const recordContent = ref<recordContents[] | string[] >([]);
 
 
 onMounted(() => {
@@ -80,8 +80,14 @@ onMounted(() => {
 
 socket.addEventListener("message", async (event) => {
   let message = JSON.parse(event.data);
-  console.log(message);
-  recordContent.value.push(message);
+  console.log('消息=',message);
+  console.log('类型=' , typeof(message))
+ if(typeof(message)=='object' && Array.isArray(message)){
+    recordContent.value.push(...message);
+  }else{
+    recordContent.value.push(message);
+  }
+  
 });
 
 const submitText = () => {

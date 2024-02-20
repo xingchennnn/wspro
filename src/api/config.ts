@@ -11,4 +11,4 @@ const wsUrl ={
   }
 }
 
-export default  wsUrl.env
+export default  wsUrl.dev
