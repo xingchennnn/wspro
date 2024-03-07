@@ -16,7 +16,10 @@
       </span>
       <!-- 对方 -->
       <div class="word" v-else-if="!itemc.mineMsg">
-        <img :src="itemc.headUrl" />
+        <!-- <img :src="itemc.headUrl" /> -->
+        <el-avatar
+        :src="itemc.headUrl"
+      />
         <div class="info">
           <p class="time">
             {{ itemc.nickName }} {{ moment(itemc.timestamp).utcOffset(8).format('HH:mm') }}
@@ -36,7 +39,7 @@
       </div>
     </div>
     <div class="footer">
-      <el-input v-model="inputText"  />
+      <el-input v-model="inputText"  @keydown.enter="submitText()"/>
       <el-button @click="submitText()">发送</el-button>
     </div>
   </div>
@@ -59,13 +62,13 @@ const socket = new WebSocket(url);
 const inputText = ref<string>("");
 
 interface recordContents  {
-  timestamp:string | unknown,
-  headUrl:string,
-  nickName:string,
-  contactText:string,
-  userava?:string ,
-  username?:string,
-
+  timestamp:string ;
+  headUrl:string;
+  nickName:string;
+  contactText:string;
+  userava?:string ;
+  username?:string;
+  mineMsg?:string;
 }
 const recordContent = ref<recordContents[] | string[] >([]);
 
@@ -93,7 +96,7 @@ socket.addEventListener("message", async (event) => {
 const submitText = () => {
   let timestamp =  moment();
   let headUrl = userInfo.userpic ;
-  let data: recordContents = {
+  let data = {
     nickName: userInfo.username,
     timestamp,
     headUrl,
