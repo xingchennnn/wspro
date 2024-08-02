@@ -17,12 +17,9 @@ const store = useStore();
   onBeforeMount(() => {
     // 从 localStorage 中获取参数
     const localStorageParams = JSON.parse(localStorage.getItem('userInfo') || '{}');
-
     // 将参数传递到 Vuex 中
     store.dispatch('commituserInfo', localStorageParams);
   });
-
-
 
 const defaultBG = ref(' background-color:rgb(245,245,245 );')
 
@@ -32,9 +29,6 @@ const setBgcolor = ()=>{
 </script>
 
 <style>
-.body{
-  width: 100%;
-  height: 100%;
-}
+
 
 </style>

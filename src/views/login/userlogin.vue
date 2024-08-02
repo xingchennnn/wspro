@@ -4,10 +4,13 @@
     <el-main>
       <div class="login">
         <h3>添加账号</h3>
-        <el-upload></el-upload>
-        <el-input placeholder="你想取的昵称" v-model="data.userInfo.username" />
-        <el-input placeholder="输不输入无所谓" />
-        <el-button @click="login">登录 | 注册</el-button>
+        <!-- <el-upload></el-upload> -->
+        <el-input placeholder="请输入昵称" v-model="data.userInfo.username" />
+        <el-input placeholder="请输入密码" />
+        <div class="btns">
+          <el-button @click="login">登录</el-button>
+          <el-button @click="login">注册</el-button>
+        </div>
       </div>
     </el-main>
     <el-footer></el-footer>
@@ -44,9 +47,25 @@ const login = () => {
 <style lang="scss">
 .el-container {
   background-color: rgb(245, 245, 245);
+  height: 100%;
   .el-main {
+    // height: 100%;
     .login {
-      margin-top: 30px;
+      margin: 0 auto;
+      width: 15rem;
+      height: 12rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      .btns{
+        padding: 5px 0;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+
+      }
     }
   }
 }

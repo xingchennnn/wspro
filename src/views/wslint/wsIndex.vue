@@ -90,12 +90,11 @@ socket.addEventListener("message", async (event) => {
   }else{
     recordContent.value.push(message);
   }
-  
 });
 
 const submitText = () => {
   let timestamp =  moment();
-  let headUrl = userInfo.userpic ;
+  let headUrl = userInfo.userpic;
   let data = {
     nickName: userInfo.username,
     timestamp,
